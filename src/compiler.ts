@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                                  (۶* ‘ヮ’)۶”
@@ -17,12 +15,12 @@
  *   4. newAst => generator   => output
  */
 
-const tokenizer = require('./tokenizer');
-const parser = require('./parser');
-const transformer = require('./transformer');
-const codeGenerator = require('./code-generator');
+import tokenizer from './tokenizer';
+import parser from './parser';
+import transformer from './transformer';
+import codeGenerator from './code-generator';
 
-function compiler(input) {
+export default function compiler(input: any) {
   let tokens = tokenizer(input);
   let ast    = parser(tokens);
   let newAst = transformer(ast);
@@ -31,5 +29,3 @@ function compiler(input) {
   // and simply return the output!
   return output;
 }
-
-module.exports = compiler;

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                                 ⌒(❀>◞౪◟<❀)⌒
@@ -44,19 +42,19 @@
 
 // So we define a traverser function which accepts an AST and a
 // visitor. Inside we're going to define two functions...
-function traverser(ast, visitor) {
+export default function traverser(ast: any, visitor: any) {
 
   // A `traverseArray` function that will allow us to iterate over an array and
   // call the next function that we will define: `traverseNode`.
-  function traverseArray(array, parent) {
-    array.forEach(child => {
+  function traverseArray(array: any, parent: any) {
+    array.forEach((child: any) => {
       traverseNode(child, parent);
     });
   }
 
   // `traverseNode` will accept a `node` and its `parent` node. So that it can
   // pass both to our visitor methods.
-  function traverseNode(node, parent) {
+  function traverseNode(node: any, parent: any) {
 
     // We start by testing for the existence of a method on the visitor with a
     // matching `type`.
@@ -109,5 +107,3 @@ function traverser(ast, visitor) {
   // with no `parent` because the top level of the AST doesn't have a parent.
   traverseNode(ast, null);
 }
-
-module.exports = traverser;

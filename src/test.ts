@@ -1,9 +1,9 @@
-const tokenizer = require('./tokenizer');
-const parser = require('./parser');
-const transformer = require('./transformer');
-const codeGenerator = require('./code-generator');
-const compiler = require('./compiler');
-const assert = require('assert');
+import tokenizer from './tokenizer';
+import parser from './parser';
+import transformer from './transformer';
+import codeGenerator from './code-generator';
+import compiler from './compiler';
+import assert from 'assert';
 
 const input  = '(add 2 (subtract 4 2))';
 const output = 'add(2, subtract(4, 2));';

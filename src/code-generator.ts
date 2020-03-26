@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                               ヾ（〃＾∇＾）ﾉ♪
@@ -14,7 +12,7 @@
  * the tree into one giant string.
  */
 
-function codeGenerator(node) {
+export default function codeGenerator(node: any): any {
 
   // We'll break things down by the `type` of the `node`.
   switch (node.type) {
@@ -63,5 +61,3 @@ function codeGenerator(node) {
       throw new TypeError(node.type);
   }
 }
-
-module.exports = codeGenerator;
