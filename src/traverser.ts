@@ -5,6 +5,9 @@
  * ============================================================================
  */
 
+import { AST } from "./ast";
+import { ASTNodeType } from "./ast-node";
+
 /**
  * So now we have our AST, and we want to be able to visit different nodes with
  * a visitor. We need to be able to call the methods on the visitor whenever we
@@ -42,7 +45,7 @@
 
 // So we define a traverser function which accepts an AST and a
 // visitor. Inside we're going to define two functions...
-export default function traverser(ast: any, visitor: any) {
+export default function traverser(ast: AST, visitor: any) {
 
   // A `traverseArray` function that will allow us to iterate over an array and
   // call the next function that we will define: `traverseNode`.
@@ -75,19 +78,19 @@ export default function traverser(ast: any, visitor: any) {
       //
       // (Remember that `traverseArray` will in turn call `traverseNode` so  we
       // are causing the tree to be traversed recursively)
-      case 'Program':
+      case ASTNodeType.PROGRAM:
         traverseArray(node.body, node);
         break;
 
       // Next we do the same with `CallExpression` and traverse their `params`.
-      case 'CallExpression':
+      case ASTNodeType.CALL_EXPRESSION:
         traverseArray(node.params, node);
         break;
 
       // In the cases of `NumberLiteral` and `StringLiteral` we don't have any
       // child nodes to visit, so we'll just break.
-      case 'NumberLiteral':
-      case 'StringLiteral':
+      case ASTNodeType.NUMBER_LITERAL:
+      case ASTNodeType.STRING_LITERAL:
         break;
 
       // And again, if we haven't recognized the node type then we'll throw an

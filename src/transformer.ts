@@ -47,14 +47,16 @@
  */
 
 import traverser from './traverser';
+import { ASTNodeType, ASTNode } from './ast-node';
+import { AST } from './ast';
 
 // So we have our transformer function which will accept the lisp ast.
-export default function transformer(ast: any) {
+export default function transformer(ast: AST): AST {
 
   // We'll create a `newAst` which like our previous AST will have a program
   // node.
-  const newAst = {
-    type: 'Program',
+  const newAst: AST = {
+    type: ASTNodeType.PROGRAM,
     body: [],
   };
 
@@ -71,41 +73,41 @@ export default function transformer(ast: any) {
   traverser(ast, {
 
     // The first visitor method accepts any `NumberLiteral`
-    NumberLiteral: {
+    [ASTNodeType.NUMBER_LITERAL]: {
       // We'll visit them on enter.
       enter(node: any, parent: any) {
         // We'll create a new node also named `NumberLiteral` that we will push to
         // the parent context.
         parent._context.push({
-          type: 'NumberLiteral',
+          type: ASTNodeType.NUMBER_LITERAL,
           value: node.value,
         });
       },
     },
 
     // Next we have `StringLiteral`
-    StringLiteral: {
+    [ASTNodeType.STRING_LITERAL]: {
       enter(node: any, parent: any) {
         parent._context.push({
-          type: 'StringLiteral',
+          type: ASTNodeType.STRING_LITERAL,
           value: node.value,
         });
       },
     },
 
     // Next up, `CallExpression`.
-    CallExpression: {
+    [ASTNodeType.CALL_EXPRESSION]: {
       enter(node: any, parent: any) {
 
         // We start creating a new node `CallExpression` with a nested
         // `Identifier`.
-        let expression: any = {
-          type: 'CallExpression',
+        let expression: ASTNode = {
+          type: ASTNodeType.CALL_EXPRESSION,
           callee: {
-            type: 'Identifier',
+            type: ASTNodeType.IDENTIFIER,
             name: node.name,
           },
-          arguments: [] as any[],
+          arguments: [],
         };
 
         // Next we're going to define a new context on the original
@@ -115,13 +117,13 @@ export default function transformer(ast: any) {
 
         // Then we're going to check if the parent node is a `CallExpression`.
         // If it is not...
-        if (parent.type !== 'CallExpression') {
+        if (parent.type !== ASTNodeType.CALL_EXPRESSION) {
 
           // We're going to wrap our `CallExpression` node with an
           // `ExpressionStatement`. We do this because the top level
           // `CallExpression` in JavaScript are actually statements.
           expression = {
-            type: 'ExpressionStatement',
+            type: ASTNodeType.EXPRESSION_STATEMENT,
             expression,
           };
         }

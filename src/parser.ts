@@ -7,7 +7,7 @@
 
 import { Token, Type } from "./token";
 import { AST } from "./ast";
-import { ASTNode } from './ast-node';
+import { ASTNode, ASTNodeType } from './ast-node';
 
 /**
  * For our parser we're going to take our array of tokens and turn it into an
@@ -41,7 +41,7 @@ export default function parser(tokens: Token[]): AST {
         // And we'll return a new AST node called `NumberLiteral` and setting its
         // value to the value of our token.
         return {
-          type: 'NumberLiteral',
+          type: ASTNodeType.NUMBER_LITERAL,
           value: token.value,
         };
       case Type.STRING:
@@ -50,7 +50,7 @@ export default function parser(tokens: Token[]): AST {
         current++;
 
         return {
-          type: 'StringLiteral',
+          type: ASTNodeType.STRING_LITERAL,
           value: token.value,
         };
       case Type.PAREN:
@@ -65,7 +65,7 @@ export default function parser(tokens: Token[]): AST {
           // to set the name as the current token's value since the next token after
           // the open parenthesis is the name of the function.
           const node: ASTNode = {
-            type: 'CallExpression',
+            type: ASTNodeType.CALL_EXPRESSION,
             name: token.value,
             params: [],
           };
@@ -134,7 +134,7 @@ export default function parser(tokens: Token[]): AST {
   // Now, we're going to create our AST which will have a root which is a
   // `Program` node.
   const ast: AST = {
-    type: 'Program',
+    type: ASTNodeType.PROGRAM,
     body: [],
   };
 
@@ -148,7 +148,7 @@ export default function parser(tokens: Token[]): AST {
   //   (subtract 4 2)
   //
   while (current < tokens.length) {
-    ast.body.push(walk());
+    ast.body!.push(walk());
   }
 
   // At the end of our parser we'll return the AST.

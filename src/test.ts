@@ -5,6 +5,8 @@ import codeGenerator from './code-generator';
 import compiler from './compiler';
 import assert from 'assert';
 import { Type } from './token';
+import { ASTNodeType } from './ast-node';
+import { AST } from './ast';
 
 const input  = '(add 2 (subtract 4 2))';
 const output = 'add(2, subtract(4, 2));';
@@ -21,52 +23,52 @@ const tokens = [
   { type: Type.PAREN,  value: ')'        }
 ];
 
-const ast = {
-  type: 'Program',
+const ast: AST = {
+  type: ASTNodeType.PROGRAM,
   body: [{
-    type: 'CallExpression',
+    type: ASTNodeType.CALL_EXPRESSION,
     name: 'add',
     params: [{
-      type: 'NumberLiteral',
+      type: ASTNodeType.NUMBER_LITERAL,
       value: '2'
     }, {
-      type: 'CallExpression',
+      type: ASTNodeType.CALL_EXPRESSION,
       name: 'subtract',
       params: [{
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '4'
       }, {
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '2'
       }]
     }]
   }]
 };
 
-const newAst = {
-  type: 'Program',
+const newAst: AST = {
+  type: ASTNodeType.PROGRAM,
   body: [{
-    type: 'ExpressionStatement',
+    type: ASTNodeType.EXPRESSION_STATEMENT,
     expression: {
-      type: 'CallExpression',
+      type: ASTNodeType.CALL_EXPRESSION,
       callee: {
-        type: 'Identifier',
+        type: ASTNodeType.IDENTIFIER,
         name: 'add'
       },
       arguments: [{
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '2'
       }, {
-        type: 'CallExpression',
+        type: ASTNodeType.CALL_EXPRESSION,
         callee: {
-          type: 'Identifier',
+          type: ASTNodeType.IDENTIFIER,
           name: 'subtract'
         },
         arguments: [{
-          type: 'NumberLiteral',
+          type: ASTNodeType.NUMBER_LITERAL,
           value: '4'
         }, {
-          type: 'NumberLiteral',
+          type: ASTNodeType.NUMBER_LITERAL,
           value: '2'
         }]
       }]
