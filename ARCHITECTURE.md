@@ -19,7 +19,7 @@ If we had two functions `add` and `subtract` they would be written like this:
 Easy peezy right?
 
 Well good, because this is exactly what we are going to compile. While this
-is neither a complete [`LISP`]() or [`C`]() syntax, it will be enough of the syntax to demonstrate many of the major pieces of a modern compiler.
+is neither a complete [`LISP`](https://en.wikipedia.org/wiki/Lisp_(programming_language)) or [`C`](https://en.wikipedia.org/wiki/C_(programming_language)) syntax, it will be enough of the syntax to demonstrate many of the major pieces of a modern compiler.
 
 Most compilers break down into three primary stages:
 1. [*Parsing*](#parsing) is taking raw code and turning it into a more abstract representation of the code.
@@ -29,16 +29,16 @@ Most compilers break down into three primary stages:
 
 ## Parsing
 Parsing typically gets broken down into two phases: Lexical Analysis and Syntactic Analysis.
-1. *Lexical Analysis* takes the raw code and splits it apart into these things called tokens by a thing called a tokenizer (or lexer).
+1. [*Lexical Analysis*](src/tokenizer.ts) takes the raw code and splits it apart into these things called tokens by a thing called a tokenizer (or lexer).
 
    Tokens are an array of tiny little objects that describe an isolated piece of the syntax. They could be numbers, labels, punctuation, operators, whatever.
 
-2. *Syntactic Analysis* takes the tokens and reformats them into a representation that describes each part of the syntax and their relation to one another. This is known as an intermediate representation or [Abstract Syntax Tree]().
+2. [*Syntactic Analysis*](src/parser.ts) takes the tokens and reformats them into a representation that describes each part of the syntax and their relation to one another. This is known as an intermediate representation or [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
    An Abstract Syntax Tree, or AST for short, is a deeply nested object that represents code in a way that is both easy to work with and tells us a lot of information.
 
 For the following syntax:
-```scheme
+```lisp
 (add 2 (subtract 4 2))
 ```
 
