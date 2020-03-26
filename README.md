@@ -33,6 +33,29 @@ Awesome! Head on over to [the architecture document](ARCHITECTURE.md).
 
 Ouch, I'm really sorry. Let me know how it can be improved.
 
+### Run
+Setup CLI
+```
+$ npm link
+```
+
+Read input source from stdin:
+```
+$ echo '(add 2 (subtract 4 2))' | npx supertinyc
+```
+
+Read input source from file:
+```
+# contents of example.lisp
+#
+# (add 2 (subtract 4 2))
+#
+
+$ npx supertinyc example.lisp
+```
+
+Any number of files can be passed as arguments, each file will be compiled one after the other.
+
 ### Tests
 ```
 $ npm test
