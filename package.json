@@ -2,6 +2,11 @@
   "name": "the-super-tiny-compiler",
   "version": "1.0.0",
   "author": "James Kyle <me@thejameskyle.com> (thejameskyle.com)",
+  "contributors": ["Basavanagowda Kanur <basavanagowda@gmail.com>"],
   "license": "CC-BY-4.0",
-  "main": "./the-super-tiny-compiler.js"
+  "description": "Ultra-simplified example of the major pieces of a modern compiler",
+  "scripts": {
+    "test": "node src/test.js"
+  },
+  "keywords": ["compiler", "languages", "javascript"]
 }
