@@ -21,10 +21,10 @@ import transformer from './transformer';
 import codeGenerator from './code-generator';
 
 export default function compiler(input: any) {
-  let tokens = tokenizer(input);
-  let ast    = parser(tokens);
-  let newAst = transformer(ast);
-  let output = codeGenerator(newAst);
+  const tokens = tokenizer(input);
+  const ast    = parser(tokens);
+  const newAst = transformer(ast);
+  const output = codeGenerator(newAst);
 
   // and simply return the output!
   return output;
