@@ -5,13 +5,15 @@
  * ============================================================================
  */
 
+import { AST, ASTNode, ASTNodeType } from './ast-node';
+
 /**
  * So now we have our AST, and we want to be able to visit different nodes with
  * a visitor. We need to be able to call the methods on the visitor whenever we
  * encounter a node with a matching type.
  *
  *   traverse(ast, {
- *     Program: {
+ *     [ASTNodeType.PROGRAM]: {
  *       enter(node, parent) {
  *         // ...
  *       },
@@ -20,7 +22,7 @@
  *       },
  *     },
  *
- *     CallExpression: {
+ *     [ASTNodeType.CALL_EXPRESSION]: {
  *       enter(node, parent) {
  *         // ...
  *       },
@@ -29,7 +31,7 @@
  *       },
  *     },
  *
- *     NumberLiteral: {
+ *     [ASTNodeType.NUMBER_LITERAL]: {
  *       enter(node, parent) {
  *         // ...
  *       },
@@ -42,19 +44,19 @@
 
 // So we define a traverser function which accepts an AST and a
 // visitor. Inside we're going to define two functions...
-export default function traverser(ast: any, visitor: any) {
+export default function traverser(ast: AST, visitor: any) {
 
   // A `traverseArray` function that will allow us to iterate over an array and
   // call the next function that we will define: `traverseNode`.
-  function traverseArray(array: any, parent: any) {
-    array.forEach((child: any) => {
+  function traverseArray(array: ASTNode[], parent: ASTNode) {
+    array.forEach((child: ASTNode) => {
       traverseNode(child, parent);
     });
   }
 
   // `traverseNode` will accept a `node` and its `parent` node. So that it can
   // pass both to our visitor methods.
-  function traverseNode(node: any, parent: any) {
+  function traverseNode(node: ASTNode, parent: ASTNode | null) {
 
     // We start by testing for the existence of a method on the visitor with a
     // matching `type`.
@@ -69,31 +71,33 @@ export default function traverser(ast: any, visitor: any) {
     // Next we are going to split things up by the current node type.
     switch (node.type) {
 
-      // We'll start with our top level `Program`. Since Program nodes have a
-      // property named body that has an array of nodes, we will call
-      // `traverseArray` to traverse down into them.
+      // We'll start with our top level `ASTNodeType.PROGRAM`. Since
+      // ASTNodeType.PROGRAM nodes have a property named body that has
+      // an array of nodes, we will call `traverseArray` to traverse down
+      // into them.
       //
       // (Remember that `traverseArray` will in turn call `traverseNode` so  we
       // are causing the tree to be traversed recursively)
-      case 'Program':
-        traverseArray(node.body, node);
+      case ASTNodeType.PROGRAM:
+        traverseArray(node.body as ASTNode[], node);
         break;
 
-      // Next we do the same with `CallExpression` and traverse their `params`.
-      case 'CallExpression':
-        traverseArray(node.params, node);
+      // Next we do the same with `ASTNodeType.CALL_EXPRESSION` and traverse their
+      // `params`.
+      case ASTNodeType.CALL_EXPRESSION:
+        traverseArray(node.params as ASTNode[], node);
         break;
 
-      // In the cases of `NumberLiteral` and `StringLiteral` we don't have any
+      // In the cases of `ASTNodeType.NUMBER_LITERAL` and `ASTNodeType.STRING_LITERAL` we don't have any
       // child nodes to visit, so we'll just break.
-      case 'NumberLiteral':
-      case 'StringLiteral':
+      case ASTNodeType.NUMBER_LITERAL:
+      case ASTNodeType.STRING_LITERAL:
         break;
 
       // And again, if we haven't recognized the node type then we'll throw an
       // error.
       default:
-        throw new TypeError(node.type);
+        throw new TypeError(`Unrecognized syntax node ${node.type}`);
     }
 
     // If there is an `exit` method for this node type we'll call it with the

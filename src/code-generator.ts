@@ -5,6 +5,8 @@
  * ============================================================================
  */
 
+import { AST, ASTNode, ASTNodeType } from './ast-node';
+
 /**
  * Now let's move onto our last phase: The Code Generator.
  *
@@ -12,52 +14,51 @@
  * the tree into one giant string.
  */
 
-export default function codeGenerator(node: any): any {
+export default function codeGenerator(node: AST): string {
 
   // We'll break things down by the `type` of the `node`.
   switch (node.type) {
-
-    // If we have a `Program` node. We will map through each node in the `body`
-    // and run them through the code generator and join them with a newline.
-    case 'Program':
-      return node.body.map(codeGenerator)
+    case ASTNodeType.PROGRAM:
+      // We will map through each node in the `body` and run them through
+      // the code generator and join them with a newline.
+      return node.body!.map(codeGenerator)
         .join('\n');
 
-    // For `ExpressionStatement` we'll call the code generator on the nested
-    // expression and we'll add a semicolon...
-    case 'ExpressionStatement':
+    case ASTNodeType.EXPRESSION_STATEMENT:
+      // We will call the code generator on the nested expression and we'll
+      // add a semicolon...
       return (
-        codeGenerator(node.expression) +
+        codeGenerator(node.expression!) +
         ';' // << (...because we like to code the *correct* way)
       );
 
-    // For `CallExpression` we will print the `callee`, add an open
-    // parenthesis, we'll map through each node in the `arguments` array and run
-    // them through the code generator, joining them with a comma, and then
-    // we'll add a closing parenthesis.
-    case 'CallExpression':
+    case ASTNodeType.CALL_EXPRESSION:
+      // We will print the `callee`, add an open parenthesis, we'll map
+      // through each node in the `arguments` array and run them through
+      // the code generator, joining them with a comma, and then we'll
+      // add a closing parenthesis.
       return (
-        codeGenerator(node.callee) +
+        codeGenerator(node.callee!) +
         '(' +
-        node.arguments.map(codeGenerator)
+        node.arguments!.map(codeGenerator)
           .join(', ') +
         ')'
       );
 
-    // For `Identifier` we'll just return the `node`'s name.
-    case 'Identifier':
-      return node.name;
+    case ASTNodeType.IDENTIFIER:
+      // We will just return the `node`'s name.
+      return node.name!;
 
-    // For `NumberLiteral` we'll just return the `node`'s value.
-    case 'NumberLiteral':
-      return node.value;
+    case ASTNodeType.NUMBER_LITERAL:
+      // We will just return the `node`'s value.
+      return node.value!;
 
-    // For `StringLiteral` we'll add quotations around the `node`'s value.
-    case 'StringLiteral':
+    case ASTNodeType.STRING_LITERAL:
+      // We will add quotations around the `node`'s value.
       return '"' + node.value + '"';
 
-    // And if we haven't recognized the node, we'll throw an error.
     default:
+      // And if we haven't recognized the node.
       throw new TypeError(node.type);
   }
 }
