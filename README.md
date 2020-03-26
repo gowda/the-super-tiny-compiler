@@ -5,12 +5,10 @@
 This is an ultra-simplified example of all the major pieces of a modern compiler
 written in easy to read JavaScript.
 
-Reading through the guided code will help you learn about how *most* compilers
+Reading through [the architecture document](ARCHITECTURE.md) will help you learn about how *most* compilers
 work from end to end.
 
 ### [Want to jump into the code? Click here](the-super-tiny-compiler.js)
-
-### [You can also check it out on Glitch](https://the-super-tiny-compiler.glitch.me/)
 
 ---
 
@@ -29,16 +27,16 @@ the nerds are able to understand.
 
 ### Okay so where do I begin?
 
-Awesome! Head on over to the [the-super-tiny-compiler.js](the-super-tiny-compiler.js)
-file.
+Awesome! Head on over to [the architecture document](ARCHITECTURE.md).
 
 ### I'm back, that didn't make sense
 
 Ouch, I'm really sorry. Let me know how it can be improved.
 
 ### Tests
-
-Run with `node test.js`
+```
+$ node src/test.js
+```
 
 ---
 
