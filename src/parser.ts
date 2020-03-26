@@ -14,8 +14,20 @@ import { Token } from "./tokenizer";
  *   [{ type: 'paren', value: '(' }, ...]   =>   { type: 'Program', body: [...] }
  */
 
+export interface ASTNode {
+  type: string;
+  name?: string;
+  value?: string;
+  params?: ASTNode[];
+}
+
+export interface AST {
+  type: 'Program';
+  body: ASTNode[];
+}
+
 // Okay, so we define a `parser` function that accepts our array of `tokens`.
-export default function parser(tokens: Token[]) {
+export default function parser(tokens: Token[]): AST {
 
   // Again we keep a `current` variable that we will use as a cursor.
   let current = 0;
@@ -69,10 +81,10 @@ export default function parser(tokens: Token[]) {
       // We create a base node with the type `CallExpression`, and we're going
       // to set the name as the current token's value since the next token after
       // the open parenthesis is the name of the function.
-      const node = {
+      const node: ASTNode = {
         type: 'CallExpression',
         name: token.value,
-        params: [] as any[],
+        params: [],
       };
 
       // We increment `current` *again* to skip the name token.
@@ -118,7 +130,7 @@ export default function parser(tokens: Token[]) {
       ) {
         // we'll call the `walk` function which will return a `node` and we'll
         // push it into our `node.params`.
-        node.params.push(walk());
+        node.params!.push(walk());
         token = tokens[current];
       }
 
@@ -137,9 +149,9 @@ export default function parser(tokens: Token[]) {
 
   // Now, we're going to create our AST which will have a root which is a
   // `Program` node.
-  const ast = {
+  const ast: AST = {
     type: 'Program',
-    body: [] as any[],
+    body: [],
   };
 
   // And we're going to kickstart our `walk` function, pushing nodes to our
