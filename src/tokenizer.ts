@@ -5,6 +5,8 @@
  * ============================================================================
  */
 
+import { Token, TokenType } from './token';
+
 /**
  * We're gonna start off with our first phase of parsing, lexical analysis, with
  * the tokenizer.
@@ -17,13 +19,13 @@
 
 // We start by accepting an input string of code, and we're gonna set up two
 // things...
-export default function tokenizer(input: any) {
+export default function tokenizer(input: string): Token[] {
 
   // A `current` variable for tracking our position in the code like a cursor.
   let current = 0;
 
   // And a `tokens` array for pushing our tokens to.
-  const tokens = [];
+  const tokens: Token[] = [];
 
   // We start by creating a `while` loop where we are setting up our `current`
   // variable to be incremented as much as we want `inside` the loop.
@@ -45,7 +47,7 @@ export default function tokenizer(input: any) {
       // If we do, we push a new token with the type `paren` and set the value
       // to an open parenthesis.
       tokens.push({
-        type: 'paren',
+        type: TokenType.PAREN,
         value: '(',
       });
 
@@ -61,7 +63,7 @@ export default function tokenizer(input: any) {
     // increment `current`, and `continue`.
     if (char === ')') {
       tokens.push({
-        type: 'paren',
+        type: TokenType.PAREN,
         value: ')',
       });
       current++;
@@ -106,7 +108,7 @@ export default function tokenizer(input: any) {
       }
 
       // After that we push our `number` token to the `tokens` array.
-      tokens.push({ type: 'number', value });
+      tokens.push({ type: TokenType.NUMBER, value });
 
       // And we continue on.
       continue;
@@ -137,7 +139,7 @@ export default function tokenizer(input: any) {
       char = input[++current];
 
       // And add our `string` token to the `tokens` array.
-      tokens.push({ type: 'string', value });
+      tokens.push({ type: TokenType.STRING, value });
 
       continue;
     }
@@ -162,7 +164,7 @@ export default function tokenizer(input: any) {
       }
 
       // And pushing that value as a token with the type `name` and continuing.
-      tokens.push({ type: 'name', value });
+      tokens.push({ type: TokenType.NAME, value });
 
       continue;
     }

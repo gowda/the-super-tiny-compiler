@@ -45,15 +45,15 @@ For the following syntax:
 Tokens might look something like this:
 ```javascript
 [
-  { type: 'paren',  value: '('        },
-  { type: 'name',   value: 'add'      },
-  { type: 'number', value: '2'        },
-  { type: 'paren',  value: '('        },
-  { type: 'name',   value: 'subtract' },
-  { type: 'number', value: '4'        },
-  { type: 'number', value: '2'        },
-  { type: 'paren',  value: ')'        },
-  { type: 'paren',  value: ')'        },
+  { type: TokenType.PAREN,  value: '('        },
+  { type: TokenType.NAME,   value: 'add'      },
+  { type: TokenType.NUMBER, value: '2'        },
+  { type: TokenType.PAREN,  value: '('        },
+  { type: TokenType.NAME,   value: 'subtract' },
+  { type: TokenType.NUMBER, value: '4'        },
+  { type: TokenType.NUMBER, value: '2'        },
+  { type: TokenType.PAREN,  value: ')'        },
+  { type: TokenType.PAREN,  value: ')'        },
 ]
 ```
 
