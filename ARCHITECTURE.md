@@ -60,21 +60,21 @@ Tokens might look something like this:
 And an Abstract Syntax Tree (AST) might look like this:
 ```javascript
 {
-  type: 'Program',
+  type: ASTNodeType.PROGRAM,
   body: [{
-    type: 'CallExpression',
+    type: ASTNodeType.CALL_EXPRESSION,
     name: 'add',
     params: [{
-      type: 'NumberLiteral',
+      type: ASTNodeType.NUMBER_LITERAL,
       value: '2',
     }, {
-      type: 'CallExpression',
+      type: ASTNodeType.CALL_EXPRESSION,
       name: 'subtract',
       params: [{
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '4',
       }, {
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '2',
       }]
     }]
@@ -89,19 +89,19 @@ Let’s look at how we would transform an AST.
 
 You might notice that our AST has elements within it that look very similar. There are these objects with a type property. Each of these are known as an AST Node. These nodes have defined properties on them that describe one isolated part of the tree.
 
-We can have a node for a `NumberLiteral`:
+We can have a node for a `ASTNodeType.NUMBER_LITERAL`:
 
 ```javascript
 {
-  type: 'NumberLiteral',
+  type: ASTNodeType.NUMBER_LITERAL,
   value: '2',
 }
 ```
 
-Or maybe a node for a `CallExpression`:
+Or maybe a node for a `ASTNodeType.CALL_EXPRESSION`:
 ```javascript
 {
-  type: 'CallExpression',
+  type: ASTNodeType.CALL_EXPRESSION,
   name: 'subtract',
   params: [...nested nodes go here...],
 }
@@ -116,21 +116,21 @@ In order to navigate through all of these nodes, we need to be able to traverse 
 
 ```javascript
 {
-  type: 'Program',
+  type: ASTNodeType.PROGRAM,
   body: [{
-    type: 'CallExpression',
+    type: ASTNodeType.CALL_EXPRESSION,
     name: 'add',
     params: [{
-      type: 'NumberLiteral',
+      type: ASTNodeType.NUMBER_LITERAL,
       value: '2'
     }, {
-      type: 'CallExpression',
+      type: ASTNodeType.CALL_EXPRESSION,
       name: 'subtract',
       params: [{
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '4'
       }, {
-        type: 'NumberLiteral',
+        type: ASTNodeType.NUMBER_LITERAL,
         value: '2'
       }]
     }]
@@ -139,12 +139,12 @@ In order to navigate through all of these nodes, we need to be able to traverse 
 ```
 
 So for the above AST we would go:
-1. `Program` - Starting at the top level of the AST
-2. `CallExpression` (`add`) - Moving to the first element of the `Program`'s body
-3. `NumberLiteral` (`2`) - Moving to the first element of `CallExpression`'s params
-4. `CallExpression` (`subtract`) - Moving to the second element of `CallExpression`'s params
-5. `NumberLiteral` (`4`) - Moving to the first element of `CallExpression`'s params
-6. `NumberLiteral` (`2`) - Moving to the second element of `CallExpression`'s params
+1. `ASTNodeType.PROGRAM` - Starting at the top level of the AST
+2. `ASTNodeType.CALL_EXPRESSION` (`add`) - Moving to the first element of the `ASTNodeType.PROGRAM`'s body
+3. `ASTNodeType.NUMBER_LITERAL` (`2`) - Moving to the first element of `ASTNodeType.CALL_EXPRESSION`'s params
+4. `ASTNodeType.CALL_EXPRESSION` (`subtract`) - Moving to the second element of `ASTNodeType.CALL_EXPRESSION`'s params
+5. `ASTNodeType.NUMBER_LITERAL` (`4`) - Moving to the first element of `ASTNodeType.CALL_EXPRESSION`'s params
+6. `ASTNodeType.NUMBER_LITERAL` (`2`) - Moving to the second element of `ASTNodeType.CALL_EXPRESSION`'s params
 
 If we were manipulating this AST directly, instead of creating a separate AST, we would likely introduce all sorts of abstractions here. But just visiting each node in the tree is enough for what we're trying to do.
 
@@ -155,8 +155,8 @@ The basic idea here is that we are going to create a `visitor` object that has m
 
 ```javascript
 var visitor = {
-  NumberLiteral() {},
-  CallExpression() {},
+  [ASTNodeType.NUMBER_LITERAL]() {},
+  [ASTNodeType.CALL_EXPRESSION]() {},
 };
 ```
 
@@ -165,45 +165,45 @@ When we traverse our AST, we will call the methods on this visitor whenever we `
 In order to make this useful we will also pass the node and a reference to the parent node.
 ```javascript
 var visitor = {
-  NumberLiteral(node, parent) {},
-  CallExpression(node, parent) {},
+  [ASTNodeType.NUMBER_LITERAL](node: ASTNode, parent: ASTNode) {},
+  [ASTNodeType.CALL_EXPRESSION](node: ASTNode, parent: ASTNode) {},
 };
 ```
 
 However, there also exists the possibility of calling things on `exit`. Imagine our tree structure from before in list form:
 ```yaml
-- Program
-  - CallExpression
-  - NumberLiteral
-  - CallExpression
-    - NumberLiteral
-    - NumberLiteral
+- ASTNodeType.PROGRAM
+  - ASTNodeType.CALL_EXPRESSION
+  - ASTNodeType.NUMBER_LITERAL
+  - ASTNodeType.CALL_EXPRESSION
+    - ASTNodeType.NUMBER_LITERAL
+    - ASTNodeType.NUMBER_LITERAL
 ```
 
 As we traverse down, we're going to reach branches with dead ends. As we finish each branch of the tree we `exit` it. So going down the tree we `enter` each node, and going back up we `exit`.
 
 ```
--> Program (enter)
-  -> CallExpression (enter)
-    -> Number Literal (enter)
-    <- Number Literal (exit)
-    -> Call Expression (enter)
-      -> Number Literal (enter)
-      <- Number Literal (exit)
-      -> Number Literal (enter)
-      <- Number Literal (exit)
-    <- CallExpression (exit)
-  <- CallExpression (exit)
-<- Program (exit)
+-> ASTNodeType.PROGRAM (enter)
+  -> ASTNodeType.CALL_EXPRESSION (enter)
+    -> ASTNodeType.NUMBER_LITERAL (enter)
+    <- ASTNodeType.NUMBER_LITERAL (exit)
+    -> ASTNodeType.Call Expression (enter)
+      -> ASTNodeType.NUMBER_LITERAL (enter)
+      <- ASTNodeType.NUMBER_LITERAL (exit)
+      -> ASTNodeType.NUMBER_LITERAL (enter)
+      <- ASTNodeType.NUMBER_LITERAL (exit)
+    <- ASTNodeType.CALL_EXPRESSION (exit)
+  <- ASTNodeType.CALL_EXPRESSION (exit)
+<- ASTNodeType.PROGRAM (exit)
 ```
 
 In order to support that, the final form of our visitor will look like this:
 
 ```javascript
 var visitor = {
-  NumberLiteral: {
-    enter(node, parent) {},
-    exit(node, parent) {},
+  [ASTNodeType.NUMBER_LITERAL]: {
+    enter(node: ASTNode, parent: ASTNode) {},
+    exit(node: ASTNode, parent: ASTNode) {},
   }
 };
 ```
