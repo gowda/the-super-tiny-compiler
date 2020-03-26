@@ -5,6 +5,8 @@
  * ============================================================================
  */
 
+import { Token, Type } from "./token";
+
 /**
  * We're gonna start off with our first phase of parsing, lexical analysis, with
  * the tokenizer.
@@ -14,11 +16,6 @@
  *
  *   (add 2 (subtract 4 2))   =>   [{ type: 'paren', value: '(' }, ...]
  */
-
-export interface Token {
-  type: string;
-  value: string;
-}
 
 // We start by accepting an input string of code, and we're gonna set up two
 // things...
@@ -50,7 +47,7 @@ export default function tokenizer(input: string): Token[] {
       // If we do, we push a new token with the type `paren` and set the value
       // to an open parenthesis.
       tokens.push({
-        type: 'paren',
+        type: Type.PAREN,
         value: '(',
       });
 
@@ -66,7 +63,7 @@ export default function tokenizer(input: string): Token[] {
     // increment `current`, and `continue`.
     if (char === ')') {
       tokens.push({
-        type: 'paren',
+        type: Type.PAREN,
         value: ')',
       });
       current++;
@@ -111,7 +108,7 @@ export default function tokenizer(input: string): Token[] {
       }
 
       // After that we push our `number` token to the `tokens` array.
-      tokens.push({ type: 'number', value });
+      tokens.push({ type: Type.NUMBER, value });
 
       // And we continue on.
       continue;
@@ -142,7 +139,7 @@ export default function tokenizer(input: string): Token[] {
       char = input[++current];
 
       // And add our `string` token to the `tokens` array.
-      tokens.push({ type: 'string', value });
+      tokens.push({ type: Type.STRING, value });
 
       continue;
     }
@@ -167,7 +164,7 @@ export default function tokenizer(input: string): Token[] {
       }
 
       // And pushing that value as a token with the type `name` and continuing.
-      tokens.push({ type: 'name', value });
+      tokens.push({ type: Type.NAME, value });
 
       continue;
     }

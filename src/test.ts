@@ -4,20 +4,21 @@ import transformer from './transformer';
 import codeGenerator from './code-generator';
 import compiler from './compiler';
 import assert from 'assert';
+import { Type } from './token';
 
 const input  = '(add 2 (subtract 4 2))';
 const output = 'add(2, subtract(4, 2));';
 
 const tokens = [
-  { type: 'paren',  value: '('        },
-  { type: 'name',   value: 'add'      },
-  { type: 'number', value: '2'        },
-  { type: 'paren',  value: '('        },
-  { type: 'name',   value: 'subtract' },
-  { type: 'number', value: '4'        },
-  { type: 'number', value: '2'        },
-  { type: 'paren',  value: ')'        },
-  { type: 'paren',  value: ')'        }
+  { type: Type.PAREN,  value: '('        },
+  { type: Type.NAME,   value: 'add'      },
+  { type: Type.NUMBER, value: '2'        },
+  { type: Type.PAREN,  value: '('        },
+  { type: Type.NAME,   value: 'subtract' },
+  { type: Type.NUMBER, value: '4'        },
+  { type: Type.NUMBER, value: '2'        },
+  { type: Type.PAREN,  value: ')'        },
+  { type: Type.PAREN,  value: ')'        }
 ];
 
 const ast = {
