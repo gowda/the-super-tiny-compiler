@@ -5,6 +5,8 @@
  * ============================================================================
  */
 
+import { Token } from "./tokenizer";
+
 /**
  * For our parser we're going to take our array of tokens and turn it into an
  * AST.
@@ -13,7 +15,7 @@
  */
 
 // Okay, so we define a `parser` function that accepts our array of `tokens`.
-export default function parser(tokens: any) {
+export default function parser(tokens: Token[]) {
 
   // Again we keep a `current` variable that we will use as a cursor.
   let current = 0;

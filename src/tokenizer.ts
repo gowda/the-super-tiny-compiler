@@ -15,15 +15,20 @@
  *   (add 2 (subtract 4 2))   =>   [{ type: 'paren', value: '(' }, ...]
  */
 
+export interface Token {
+  type: string;
+  value: string;
+}
+
 // We start by accepting an input string of code, and we're gonna set up two
 // things...
-export default function tokenizer(input: any) {
+export default function tokenizer(input: string): Token[] {
 
   // A `current` variable for tracking our position in the code like a cursor.
   let current = 0;
 
   // And a `tokens` array for pushing our tokens to.
-  const tokens = [];
+  const tokens: Token[] = [];
 
   // We start by creating a `while` loop where we are setting up our `current`
   // variable to be incremented as much as we want `inside` the loop.
