@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                                   ⁽(◍˃̵͈̑ᴗ˂̵͈̑)⁽
@@ -48,10 +46,10 @@
  * ----------------------------------------------------------------------------
  */
 
-const traverser = require('./traverser');
+import traverser from './traverser';
 
 // So we have our transformer function which will accept the lisp ast.
-function transformer(ast) {
+export default function transformer(ast: any) {
 
   // We'll create a `newAst` which like our previous AST will have a program
   // node.
@@ -75,7 +73,7 @@ function transformer(ast) {
     // The first visitor method accepts any `NumberLiteral`
     NumberLiteral: {
       // We'll visit them on enter.
-      enter(node, parent) {
+      enter(node: any, parent: any) {
         // We'll create a new node also named `NumberLiteral` that we will push to
         // the parent context.
         parent._context.push({
@@ -87,7 +85,7 @@ function transformer(ast) {
 
     // Next we have `StringLiteral`
     StringLiteral: {
-      enter(node, parent) {
+      enter(node: any, parent: any) {
         parent._context.push({
           type: 'StringLiteral',
           value: node.value,
@@ -97,17 +95,17 @@ function transformer(ast) {
 
     // Next up, `CallExpression`.
     CallExpression: {
-      enter(node, parent) {
+      enter(node: any, parent: any) {
 
         // We start creating a new node `CallExpression` with a nested
         // `Identifier`.
-        let expression = {
+        let expression: any = {
           type: 'CallExpression',
           callee: {
             type: 'Identifier',
             name: node.name,
           },
-          arguments: [],
+          arguments: [] as any[],
         };
 
         // Next we're going to define a new context on the original
@@ -139,5 +137,3 @@ function transformer(ast) {
   // just created.
   return newAst;
 }
-
-module.exports = transformer;

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                                 ヽ/❀o ل͜ o\ﾉ
@@ -15,7 +13,7 @@
  */
 
 // Okay, so we define a `parser` function that accepts our array of `tokens`.
-function parser(tokens) {
+export default function parser(tokens: any) {
 
   // Again we keep a `current` variable that we will use as a cursor.
   let current = 0;
@@ -72,7 +70,7 @@ function parser(tokens) {
       let node = {
         type: 'CallExpression',
         name: token.value,
-        params: [],
+        params: [] as any[],
       };
 
       // We increment `current` *again* to skip the name token.
@@ -139,7 +137,7 @@ function parser(tokens) {
   // `Program` node.
   let ast = {
     type: 'Program',
-    body: [],
+    body: [] as any[],
   };
 
   // And we're going to kickstart our `walk` function, pushing nodes to our
@@ -158,5 +156,3 @@ function parser(tokens) {
   // At the end of our parser we'll return the AST.
   return ast;
 }
-
-module.exports = parser;

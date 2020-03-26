@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * ============================================================================
  *                                   (/^▽^)/
@@ -19,7 +17,7 @@
 
 // We start by accepting an input string of code, and we're gonna set up two
 // things...
-function tokenizer(input) {
+export default function tokenizer(input: any) {
 
   // A `current` variable for tracking our position in the code like a cursor.
   let current = 0;
@@ -177,5 +175,3 @@ function tokenizer(input) {
   // Then at the end of our `tokenizer` we simply return the tokens array.
   return tokens;
 }
-
-module.exports = tokenizer;
