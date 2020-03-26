@@ -8,8 +8,13 @@
   "license": "CC-BY-4.0",
   "description": "Ultra-simplified example of the major pieces of a modern compiler",
   "scripts": {
+    "build": "tsc",
     "lint": "tslint --config tslint.json --project tsconfig.json",
-    "test": "ts-node src/test.ts"
+    "test": "ts-node src/test.ts",
+    "preinstall": "npm run build"
+  },
+  "bin": {
+    "supertinyc": "./dist/cli.js"
   },
   "keywords": [
     "compiler",
