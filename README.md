@@ -35,7 +35,7 @@ Ouch, I'm really sorry. Let me know how it can be improved.
 
 ### Tests
 ```
-$ node src/test.js
+$ npm test
 ```
 
 ---
