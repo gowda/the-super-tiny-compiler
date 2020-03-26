@@ -58,7 +58,7 @@ export default function traverser(ast: any, visitor: any) {
 
     // We start by testing for the existence of a method on the visitor with a
     // matching `type`.
-    let methods = visitor[node.type];
+    const methods = visitor[node.type];
 
     // If there is an `enter` method for this node type we'll call it with the
     // `node` and its `parent`.

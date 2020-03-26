@@ -53,7 +53,7 @@ export default function transformer(ast: any) {
 
   // We'll create a `newAst` which like our previous AST will have a program
   // node.
-  let newAst = {
+  const newAst = {
     type: 'Program',
     body: [],
   };
@@ -122,7 +122,7 @@ export default function transformer(ast: any) {
           // `CallExpression` in JavaScript are actually statements.
           expression = {
             type: 'ExpressionStatement',
-            expression: expression,
+            expression,
           };
         }
 

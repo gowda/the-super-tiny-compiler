@@ -7,7 +7,16 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false,
+        "ignoreDefinitionFiles": true,
+        "suppressWhileTypeErrorsPresent": false,
+        "packageManager": "npm"
+      }
+    ]
   },
   "exclude": ["node_modules"]
 }

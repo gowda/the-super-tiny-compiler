@@ -67,7 +67,7 @@ export default function parser(tokens: any) {
       // We create a base node with the type `CallExpression`, and we're going
       // to set the name as the current token's value since the next token after
       // the open parenthesis is the name of the function.
-      let node = {
+      const node = {
         type: 'CallExpression',
         name: token.value,
         params: [] as any[],
@@ -135,7 +135,7 @@ export default function parser(tokens: any) {
 
   // Now, we're going to create our AST which will have a root which is a
   // `Program` node.
-  let ast = {
+  const ast = {
     type: 'Program',
     body: [] as any[],
   };
