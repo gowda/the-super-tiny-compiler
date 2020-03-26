@@ -1,10 +1,8 @@
-const {
-  tokenizer,
-  parser,
-  transformer,
-  codeGenerator,
-  compiler,
-} = require('./the-super-tiny-compiler');
+const tokenizer = require('./tokenizer');
+const parser = require('./parser');
+const transformer = require('./transformer');
+const codeGenerator = require('./code-generator');
+const compiler = require('./compiler');
 const assert = require('assert');
 
 const input  = '(add 2 (subtract 4 2))';
