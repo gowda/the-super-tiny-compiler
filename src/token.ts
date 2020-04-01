@@ -1,4 +1,4 @@
-export enum TokenType { PAREN = 1, NAME, NUMBER, STRING }
+export enum TokenType { PAREN = 'paren', NAME = 'name', NUMBER = 'number', STRING = 'string' }
 
 export interface Token {
   type: TokenType;
