@@ -5,7 +5,7 @@ import codeGenerator from './code-generator';
 import compiler from './compiler';
 import assert from 'assert';
 import { Token, TokenType } from './token';
-import { AST, ASTNodeType } from './ast-node';
+import Node, { Type } from './syntax-tree/node';
 
 const input  = '(add 2 (subtract 4 2))';
 const output = 'add(2, subtract(4, 2));';
@@ -22,57 +22,78 @@ const tokens: Token[] = [
   { type: TokenType.PAREN,  value: ')'        }
 ];
 
-const ast: AST = {
-  type: ASTNodeType.PROGRAM,
-  body: [{
-    type: ASTNodeType.CALL_EXPRESSION,
-    name: 'add',
-    params: [{
-      type: ASTNodeType.NUMBER_LITERAL,
-      value: '2'
-    }, {
-      type: ASTNodeType.CALL_EXPRESSION,
-      name: 'subtract',
-      params: [{
-        type: ASTNodeType.NUMBER_LITERAL,
-        value: '4'
-      }, {
-        type: ASTNodeType.NUMBER_LITERAL,
-        value: '2'
-      }]
-    }]
-  }]
+const ast: Node = {
+  type: Type.PROGRAM,
+  value: null,
+  children: [
+    {
+      type: Type.CALL_EXPRESSION,
+      value: 'add',
+      children: [
+        {
+          type: Type.NUMBER_LITERAL,
+          value: '2',
+          children: [],
+        },
+        {
+          type: Type.CALL_EXPRESSION,
+          value: 'subtract',
+          children: [
+            {
+              type: Type.NUMBER_LITERAL,
+              value: '4',
+              children: [],
+            },
+            {
+              type: Type.NUMBER_LITERAL,
+              value: '2',
+              children: [],
+            },
+          ]
+        },
+      ]
+    }
+  ]
 };
 
-const newAst: AST = {
-  type: ASTNodeType.PROGRAM,
-  body: [{
-    type: ASTNodeType.EXPRESSION_STATEMENT,
-    expression: {
-      type: ASTNodeType.CALL_EXPRESSION,
-      callee: {
-        type: ASTNodeType.IDENTIFIER,
-        name: 'add'
-      },
-      arguments: [{
-        type: ASTNodeType.NUMBER_LITERAL,
-        value: '2'
-      }, {
-        type: ASTNodeType.CALL_EXPRESSION,
-        callee: {
-          type: ASTNodeType.IDENTIFIER,
-          name: 'subtract'
-        },
-        arguments: [{
-          type: ASTNodeType.NUMBER_LITERAL,
-          value: '4'
-        }, {
-          type: ASTNodeType.NUMBER_LITERAL,
-          value: '2'
-        }]
-      }]
+const newAst: Node = {
+  type: Type.PROGRAM,
+  value: null,
+  children: [
+    {
+      type: Type.EXPRESSION_STATEMENT,
+      value: null,
+      children: [
+        {
+          type: Type.CALL_EXPRESSION,
+          value: 'add',
+          children: [
+            {
+              type: Type.NUMBER_LITERAL,
+              value: '2',
+              children: [],
+            },
+            {
+              type: Type.CALL_EXPRESSION,
+              value: 'subtract',
+              children: [
+                {
+                  type: Type.NUMBER_LITERAL,
+                  value: '4',
+                  children: [],
+                },
+                {
+                  type: Type.NUMBER_LITERAL,
+                  value: '2',
+                  children: [],
+                }
+              ]
+            },
+          ],
+        }
+      ],
     }
-  }]
+  ]
 };
 
 assert.deepStrictEqual(tokenizer(input), tokens, 'Tokenizer should turn `input` string into `tokens` array');
