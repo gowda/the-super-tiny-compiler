@@ -10,8 +10,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint --config tslint.json --project tsconfig.json",
-    "test": "ts-node src/test.ts",
-    "preinstall": "npm run build"
+    "test": "ts-node src/test.ts"
   },
   "bin": {
     "supertinyc": "./dist/cli.js"
