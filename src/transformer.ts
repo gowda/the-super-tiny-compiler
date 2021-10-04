@@ -1,13 +1,13 @@
-import Node, { Type } from './syntax-tree/node';
+import ASTNode, { Type } from './syntax-tree/node';
 import traverser from './syntax-tree/traverser';
 import Visitor from './syntax-tree/visitor';
 
-export default function transformer(ast: Node): Node {
+export default function transformer(ast: ASTNode): ASTNode {
   const visitor: Visitor = {
-    [Type.PROGRAM](node: Node): Node {
+    [Type.PROGRAM](node: ASTNode): ASTNode {
       return {
         ...node,
-        children: node.children.map((child): Node => {
+        children: node.children.map((child): ASTNode => {
           if (child.type === Type.CALL_EXPRESSION) {
             return {
               type: Type.EXPRESSION_STATEMENT,
@@ -22,5 +22,5 @@ export default function transformer(ast: Node): Node {
     }
   };
 
-  return traverser(ast, visitor) as Node;
+  return traverser(ast, visitor) as ASTNode;
 }

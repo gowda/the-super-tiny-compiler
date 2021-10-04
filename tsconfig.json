@@ -3,20 +3,12 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "alwaysStrict": true, 
+    "alwaysStrict": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
     "forceConsistentCasingInFileNames": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": false,
-        "ignoreDefinitionFiles": true,
-        "suppressWhileTypeErrorsPresent": false,
-        "packageManager": "npm"
-      }
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": ["node_modules"]
 }

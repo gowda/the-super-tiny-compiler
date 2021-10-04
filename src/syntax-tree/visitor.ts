@@ -1,5 +1,5 @@
-import Node from './node';
+import ASTNode from './node';
 
 export default interface Visitor {
-  [index: string]: (node: Node) => (Node | string);
+  [index: string]: (node: ASTNode) => (ASTNode | string);
 }

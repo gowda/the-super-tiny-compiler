@@ -7,8 +7,8 @@ export enum Type {
   STRING_LITERAL = 'string_literal',
 }
 
-export default interface Node {
+export default interface ASTNode {
   type: Type;
   value: string | null;
-  children: Node[];
+  children: ASTNode[];
 }

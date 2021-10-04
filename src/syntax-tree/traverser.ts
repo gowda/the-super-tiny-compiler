@@ -1,9 +1,9 @@
-import Node from './node';
+import ASTNode from './node';
 import Visitor from './visitor';
 
-export type TraverserFunction = (node: Node, visitor: Visitor) => Node | string;
+export type TraverserFunction = (node: ASTNode, visitor: Visitor) => ASTNode | string;
 
-export default (node: Node, visitor: Visitor): Node | string => {
+export default (node: ASTNode, visitor: Visitor): ASTNode | string => {
   const method = visitor[node.type];
 
   if (method) {

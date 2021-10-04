@@ -1,10 +1,10 @@
 import { Token, TokenType } from './token';
-import Node, { Type } from './syntax-tree/node';
+import ASTNode, { Type } from './syntax-tree/node';
 
-export default function parser(tokens: Token[]): Node {
+export default function parser(tokens: Token[]): ASTNode {
   let current = 0;
 
-  function processNumber(): Node | null {
+  function processNumber(): ASTNode | null {
     if (tokens[current].type !== TokenType.NUMBER) {
       return null;
     }
@@ -16,7 +16,7 @@ export default function parser(tokens: Token[]): Node {
     };
   }
 
-  function processString(): Node | null {
+  function processString(): ASTNode | null {
     if (tokens[current].type !== TokenType.STRING) {
       return null;
     }
@@ -28,13 +28,13 @@ export default function parser(tokens: Token[]): Node {
     }
   }
 
-  function processParen(): Node | null {
+  function processParen(): ASTNode | null {
     if (tokens[current].type !== TokenType.PAREN || tokens[current].value !== '(') {
       return null;
     }
     let token = tokens[++current];
 
-    const node: Node = {
+    const node: ASTNode = {
       type: Type.CALL_EXPRESSION,
       value: token.value,
       children: [],
@@ -49,7 +49,8 @@ export default function parser(tokens: Token[]): Node {
         (tokens[current].type === TokenType.PAREN && tokens[current].value !== ')')
       )
     ) {
-      node.children.push(processNode() as Node);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      node.children.push(processNode() as ASTNode);
     }
 
     // closing paren
@@ -58,25 +59,25 @@ export default function parser(tokens: Token[]): Node {
     return node;
   }
 
-  function throwUnknownTokenException(): Node | null {
+  function throwUnknownTokenException(): ASTNode | null {
     throw new TypeError(`Unknown token ${tokens[current].type}: ${tokens[current].value}`);
   }
 
-  function processNode(): Node | null {
+  function processNode(): ASTNode | null {
     return processNumber() ||
       processString() ||
       processParen() ||
       throwUnknownTokenException();
   }
 
-  const ast: Node = {
+  const ast: ASTNode = {
     type: Type.PROGRAM,
     value: null,
     children: [],
   };
 
   while (current < tokens.length) {
-    ast.children.push(processNode() as Node);
+    ast.children.push(processNode() as ASTNode);
   }
 
   return ast;

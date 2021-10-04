@@ -5,7 +5,7 @@ import codeGenerator from './code-generator';
 import compiler from './compiler';
 import assert from 'assert';
 import { Token, TokenType } from './token';
-import Node, { Type } from './syntax-tree/node';
+import ASTNode, { Type } from './syntax-tree/node';
 
 const input  = '(add 2 (subtract 4 2))';
 const output = 'add(2, subtract(4, 2));';
@@ -22,7 +22,7 @@ const tokens: Token[] = [
   { type: TokenType.PAREN,  value: ')'        }
 ];
 
-const ast: Node = {
+const ast: ASTNode = {
   type: Type.PROGRAM,
   value: null,
   children: [
@@ -56,7 +56,7 @@ const ast: Node = {
   ]
 };
 
-const newAst: Node = {
+const newAst: ASTNode = {
   type: Type.PROGRAM,
   value: null,
   children: [
