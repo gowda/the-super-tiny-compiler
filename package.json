@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "test": "mocha src/**/*.test.ts"
+    "test": "mocha --colors false src/**/*.test.ts"
   },
   "bin": {
     "supertinyc": "./dist/cli.js"
